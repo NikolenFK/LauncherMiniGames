@@ -1,9 +1,12 @@
 package MainFiles;
 
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -61,10 +64,30 @@ public class StageController {
             stage.setTitle(sceneTitle);
             stage.setScene(scene);
 
+            Platform.runLater(this::centerStageOnScreen);
+
+            scene.widthProperty().addListener((observable, oldValue, newValue) -> centerStageOnScreen());
+            scene.heightProperty().addListener((observable, oldValue, newValue) -> centerStageOnScreen());
+
             animationBeforeNewScene(root);
         } catch (Exception e) {
             System.out.println("Oops! Something's wrong)");
         }
+    }
+
+    /**
+     * Centers the stage on the screen
+     */
+    private void centerStageOnScreen() {
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+
+        if (stage.getWidth() <= 0 || stage.getHeight() <= 0) {
+            stage.setWidth(screenBounds.getWidth() / 2);
+            stage.setHeight(screenBounds.getHeight() / 2);
+        }
+
+        stage.setX((screenBounds.getWidth() - stage.getWidth()) / 2);
+        stage.setY((screenBounds.getHeight() - stage.getHeight()) / 2);
     }
 
     /**
