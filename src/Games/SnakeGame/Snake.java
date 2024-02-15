@@ -6,6 +6,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -20,77 +21,84 @@ import java.util.Objects;
 import java.util.Random;
 
 /**
- * Represents the Snake game logic
+ * Represents the Snake game logic.
  */
 public class Snake {
 
     private final double HEIGHT;
     private final double WIDTH;
-    private final int ROWS;
-    private final int COLUMNS;
-    private final double SQUARE_SIZE;
+    private final ChoiceBox<String> fieldSizeChoiceBox;
     private static final String[] FOODS_IMAGE = {"Img/apple.png", "Img/banana.png", "Img/orange.png"};
     private static final int INITIAL_SPEED = 130;
     private static final int SPEED_INCREASE_AMOUNT = 5;
-
+    private final Label scoreLabel;
+    private final GraphicsContext graphicsContext;
+    private final ArrayList<Point> snakeBody = new ArrayList<>();
+    private final Random random = new Random();
+    private int rows;
+    private int columns;
+    private double square_size;
     private int currentSpeed = INITIAL_SPEED;
     private Timeline timeline;
-    private final GraphicsContext graphicsContext;
-    private final Label scoreLabel;
     private Direction direction = Direction.DOWN;
     private Direction pendingDirection = direction;
-    private final ArrayList<Point> snakeBody = new ArrayList<>();
     private Point snakeHead;
     private int foodX;
     private int foodY;
     private Image foodImage;
     private int score = 0;
     private boolean isGameOver = false;
-    private final Random random = new Random();
 
     /**
-     * Initializes a new instance of the Snake class
+     * Initializes a new instance of the Snake class.
      *
-     * @param height          The height of the game window
-     * @param width           The width of the game window
-     * @param rows            The number of rows in the game grid
-     * @param columns         The number of columns in the game grid
-     * @param graphicsContext The GraphicsContext for drawing on the game canvas
-     * @param scoreLabel      The label to display the game score
+     * @param height          The height of the game window.
+     * @param width           The width of the game window.
+     * @param graphicsContext The GraphicsContext for drawing on the game canvas.
+     * @param scoreLabel      The label to display the game score.
      */
-    public Snake(double height, double width, int rows, int columns, GraphicsContext graphicsContext, Label scoreLabel) {
+    public Snake(double height, double width, GraphicsContext graphicsContext, Label scoreLabel, ChoiceBox<String> fieldSizeChoiceBox) {
         this.HEIGHT = height;
         this.WIDTH = width;
-        this.ROWS = rows;
-        this.COLUMNS = columns;
         this.graphicsContext = graphicsContext;
         this.scoreLabel = scoreLabel;
-        this.SQUARE_SIZE = width / rows;
+        this.fieldSizeChoiceBox = fieldSizeChoiceBox;
 
         initializeKeyPressHandler();
     }
 
     /**
-     * Starts the Snake game
+     * Starts the Snake game.
      */
     public void start() {
+        StageController.getInstance().RequestFocus();
+        resizeField();
         initializeSnake();
         spawnFood();
         startTimeline();
     }
 
     /**
-     * Initializes the snake with a default size and position
+     * Resizes the game field.
+     */
+    private void resizeField() {
+        rows = Integer.parseInt(fieldSizeChoiceBox.getValue().split("x")[0]);
+        columns = Integer.parseInt(fieldSizeChoiceBox.getValue().split("x")[1]);
+        square_size = WIDTH / rows;
+    }
+
+    /**
+     * Initializes the snake with a default size and position.
      */
     private void initializeSnake() {
         for (int i = 0; i < 3; i++)
-            snakeBody.add(new Point(ROWS / 2, COLUMNS / 2));
+            snakeBody.add(new Point(rows / 2, columns / 2));
 
         snakeHead = snakeBody.get(0);
     }
 
     /**
-     * Starts the game timeline for continuous updates
+     * Starts the game timeline for continuous updates.
      */
     private void startTimeline() {
         timeline = new Timeline(new KeyFrame(Duration.millis(currentSpeed), e -> run()));
@@ -99,16 +107,16 @@ public class Snake {
     }
 
     /**
-     * Initializes the key press handler for controlling the snake
+     * Initializes the key press handler for controlling the snake.
      */
     private void initializeKeyPressHandler() {
-        Platform.runLater(() -> StageController.getInstance().getScene().setOnKeyPressed(this::handleKeyPress));
+        Platform.runLater(() -> StageController.getInstance().getScene().addEventHandler(KeyEvent.KEY_PRESSED, this::handleKeyPress));
     }
 
     /**
-     * Handles the key press events for changing the snake direction
+     * Handles the key press events for changing the snake direction.
      *
-     * @param keyEvent The KeyEvent representing the key press
+     * @param keyEvent The KeyEvent representing the key press.
      */
     private void handleKeyPress(KeyEvent keyEvent) {
         KeyCode code = keyEvent.getCode();
@@ -120,9 +128,9 @@ public class Snake {
     }
 
     /**
-     * Sets the new direction for the snake, avoiding opposite directions
+     * Sets the new direction for the snake, avoiding opposite directions.
      *
-     * @param newDirection The new direction to set
+     * @param newDirection The new direction to set.
      */
     private void setDirection(Direction newDirection) {
         if (direction != newDirection.opposite())
@@ -130,7 +138,7 @@ public class Snake {
     }
 
     /**
-     * MainFiles.Main game loop where the snake moves, checks for collisions, and updates the game state
+     * MainFiles.Main game loop where the snake moves, checks for collisions, and updates the game state.
      */
     private void run() {
         if (isGameOver) {
@@ -152,7 +160,7 @@ public class Snake {
     }
 
     /**
-     * Updates the snake body by shifting its segments
+     * Updates the snake body by shifting its segments.
      */
     private void updateSnakeBody() {
         for (int i = snakeBody.size() - 1; i > 0; i--) {
@@ -162,7 +170,7 @@ public class Snake {
     }
 
     /**
-     * Moves the snake head based on the current direction
+     * Moves the snake head based on the current direction.
      */
     private void moveSnake() {
         switch (direction) {
@@ -174,20 +182,20 @@ public class Snake {
     }
 
     /**
-     * Draws the background of the game grid
+     * Draws the background of the game grid.
      */
     private void drawBackground() {
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLUMNS; j++) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
                 Color color = (i + j) % 2 == 0 ? Color.web("#AAD751") : Color.web("#A2D149");
                 graphicsContext.setFill(color);
-                graphicsContext.fillRect(i * SQUARE_SIZE, j * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
+                graphicsContext.fillRect(i * square_size, j * square_size, square_size, square_size);
             }
         }
     }
 
     /**
-     * Draws the snake on the game canvas
+     * Draws the snake on the game canvas.
      */
     private void drawSnake() {
         drawSnakeSegment(snakeHead, 30);
@@ -197,26 +205,26 @@ public class Snake {
     }
 
     /**
-     * Draws a snake segment on the game canvas with rounded corners
+     * Draws a snake segment on the game canvas with rounded corners.
      *
-     * @param point The position of the snake segment
-     * @param size  The size of the snake segment
+     * @param point The position of the snake segment.
+     * @param size  The size of the snake segment.
      */
     private void drawSnakeSegment(Point point, double size) {
         graphicsContext.setFill(Color.web("#558B2F"));
-        graphicsContext.fillRoundRect(point.getX() * SQUARE_SIZE, point.getY() * SQUARE_SIZE,
-                SQUARE_SIZE - 1, SQUARE_SIZE - 1, size, size);
+        graphicsContext.fillRoundRect(point.getX() * square_size, point.getY() * square_size,
+                square_size - 1, square_size - 1, size, size);
     }
 
     /**
-     * Draws the food on the game canvas
+     * Draws the food on the game canvas.
      */
     private void drawFood() {
-        graphicsContext.drawImage(foodImage, foodX * SQUARE_SIZE, foodY * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
+        graphicsContext.drawImage(foodImage, foodX * square_size, foodY * square_size, square_size, square_size);
     }
 
     /**
-     * Handles the logic when the snake eats the food
+     * Handles the logic when the snake eats the food.
      */
     private void eatFood() {
         if (snakeHead.getX() == foodX && snakeHead.getY() == foodY) {
@@ -229,7 +237,7 @@ public class Snake {
     }
 
     /**
-     * Increases the game speed when the snake eats food
+     * Increases the game speed when the snake eats food.
      */
     private void increaseSpeed() {
         if (score % 3 == 0) {
@@ -240,7 +248,7 @@ public class Snake {
     }
 
     /**
-     * Checks if the game is over due to collisions or reaching the boundaries
+     * Checks if the game is over due to collisions or reaching the boundaries.
      */
     private void checkIsGameOver() {
         if (isSnakeOutOfBounds() || isSnakeColliding()) {
@@ -249,19 +257,19 @@ public class Snake {
     }
 
     /**
-     * Checks if the snake is out of bounds
+     * Checks if the snake is out of bounds.
      *
-     * @return True if the snake is out of bounds, false otherwise
+     * @return True if the snake is out of bounds, false otherwise.
      */
     private boolean isSnakeOutOfBounds() {
         return snakeHead.getX() < 0 || snakeHead.getY() < 0 ||
-                snakeHead.getX() * SQUARE_SIZE >= WIDTH || snakeHead.getY() * SQUARE_SIZE >= HEIGHT;
+                snakeHead.getX() * square_size >= WIDTH || snakeHead.getY() * square_size >= HEIGHT;
     }
 
     /**
-     * Checks if the snake is colliding with itself
+     * Checks if the snake is colliding with itself.
      *
-     * @return True if the snake is colliding with itself, false otherwise
+     * @return True if the snake is colliding with itself, false otherwise.
      */
     private boolean isSnakeColliding() {
         for (int i = 1; i < snakeBody.size(); i++) {
@@ -273,12 +281,12 @@ public class Snake {
     }
 
     /**
-     * Spawns the food at a random location on the game grid
+     * Spawns the food at a random location on the game grid.
      */
     private void spawnFood() {
         do {
-            foodX = random.nextInt(ROWS);
-            foodY = random.nextInt(COLUMNS);
+            foodX = random.nextInt(rows);
+            foodY = random.nextInt(columns);
         } while (!isFoodLocationValid());
 
         String randomFoodImage = FOODS_IMAGE[random.nextInt(FOODS_IMAGE.length)];
@@ -286,9 +294,9 @@ public class Snake {
     }
 
     /**
-     * Checks if the food location is valid and not on the snake
+     * Checks if the food location is valid and not on the snake.
      *
-     * @return True if the food location is valid, false otherwise
+     * @return True if the food location is valid, false otherwise.
      */
     private boolean isFoodLocationValid() {
         for (Point point : snakeBody) {
@@ -300,14 +308,14 @@ public class Snake {
     }
 
     /**
-     * Updates the score label with the current score
+     * Updates the score label with the current score.
      */
     private void updateLabel() {
         scoreLabel.setText("Score: " + score);
     }
 
     /**
-     * Displays the game over message and score on the canvas
+     * Displays the game over message and score on the canvas.
      */
     private void displayGameOver() {
         graphicsContext.setFill(Color.RED);
@@ -319,7 +327,7 @@ public class Snake {
     }
 
     /**
-     * Restarts the Snake game by stopping the timeline, resetting the score, and starting a new game
+     * Restarts the Snake game by stopping the timeline, resetting the score, and starting a new game.
      */
     public void restart() {
         timeline.stop();
@@ -327,6 +335,7 @@ public class Snake {
         updateLabel();
         snakeBody.clear();
         isGameOver = false;
+
         start();
     }
 }

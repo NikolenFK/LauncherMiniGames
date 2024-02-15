@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -13,7 +14,7 @@ import javafx.util.Duration;
 import java.util.Objects;
 
 /**
- * A singleton controller for managing JavaFX stages and scene transitions
+ * A singleton controller for managing JavaFX stages and scene transitions.
  */
 public class StageController {
 
@@ -22,16 +23,17 @@ public class StageController {
     private Scene scene;
 
     /**
-     * Private constructor to enforce singleton pattern
+     * Private constructor to enforce singleton pattern.
      */
     private StageController() {
         stage = new Stage();
+        stage.setResizable(false);
     }
 
     /**
-     * Retrieves the instance of the StageController, creating a new one if it doesn't exist
+     * Retrieves the instance of the StageController, creating a new one if it doesn't exist.
      *
-     * @return The instance of StageController
+     * @return The instance of StageController.
      */
     public static synchronized StageController getInstance() {
         if (instance == null)
@@ -40,19 +42,19 @@ public class StageController {
     }
 
     /**
-     * Gets the current scene of the stage
+     * Gets the current scene of the stage.
      *
-     * @return The current Scene object
+     * @return The current Scene object.
      */
     public Scene getScene() {
         return this.scene;
     }
 
     /**
-     * Opens a new scene with a fade-in animation
+     * Opens a new scene with a fade-in animation.
      *
-     * @param pathToNewScene The path to the FXML file of the new scene
-     * @param sceneTitle     The title of the new scene
+     * @param pathToNewScene The path to the FXML file of the new scene.
+     * @param sceneTitle     The title of the new scene.
      */
     public void openNewScene(String pathToNewScene, String sceneTitle) {
         try {
@@ -63,6 +65,11 @@ public class StageController {
 
             stage.setTitle(sceneTitle);
             stage.setScene(scene);
+
+            scene.setOnKeyPressed(keyEvent -> {
+                if (keyEvent.getCode() == KeyCode.ESCAPE)
+                    Platform.exit();
+            });
 
             Platform.runLater(this::centerStageOnScreen);
 
@@ -76,7 +83,7 @@ public class StageController {
     }
 
     /**
-     * Centers the stage on the screen
+     * Centers the stage on the screen.
      */
     private void centerStageOnScreen() {
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
@@ -91,9 +98,9 @@ public class StageController {
     }
 
     /**
-     * Performs a fade-in animation on the given root before showing the stage
+     * Performs a fade-in animation on the given root before showing the stage.
      *
-     * @param root The root Parent of the scene
+     * @param root The root Parent of the scene.
      */
     private void animationBeforeNewScene(Parent root) {
         FadeTransition fadeIn = new FadeTransition(Duration.millis(1000), root);
@@ -101,5 +108,14 @@ public class StageController {
         fadeIn.setToValue(1);
         fadeIn.play();
         stage.show();
+        RequestFocus();
+    }
+
+    /**
+     * Requests focus for the root node of the current scene.
+     * This method ensures that the root node receives keyboard focus.
+     */
+    public void RequestFocus() {
+        getScene().getRoot().requestFocus();
     }
 }
