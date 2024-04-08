@@ -4,37 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="370232fe-37ac-433c-86d8-fa4fa7291707" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Controllers/HelloController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Controllers/MinesweeperController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Controllers/SelectionMenuController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Controllers/SignIn_SignUp/SignInController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Controllers/SignIn_SignUp/SignUpController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Controllers/SnakeGameController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Games/MinesweeperGame/Minesweeper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Games/SnakeGame/Direction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Games/SnakeGame/Snake.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/MainFiles/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/MainFiles/SceneConstants.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/MainFiles/StageController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/MainFiles/StartLauncherMiniGames.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/FXML_Files/Minesweeper.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/FXML_Files/SelectionMenu.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/FXML_Files/SignIn_SignUp/SignIn.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/FXML_Files/SignIn_SignUp/SignUp.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/FXML_Files/SnakeGame.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Images/ImagesForSnakeGame/apple.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Images/ImagesForSnakeGame/banana.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Images/ImagesForSnakeGame/orange.png" afterDir="false" />
-    </list>
+    <list default="true" id="370232fe-37ac-433c-86d8-fa4fa7291707" name="Changes" comment="Changed to maven project" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -178,12 +148,25 @@
       <workItem from="1712593506541" duration="190000" />
       <workItem from="1712593715849" duration="74000" />
       <workItem from="1712594115239" duration="323000" />
-      <workItem from="1712595541027" duration="3995000" />
+      <workItem from="1712595541027" duration="4737000" />
     </task>
+    <task id="LOCAL-00001" summary="Changed to maven project">
+      <option name="closed" value="true" />
+      <created>1712600298910</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1712600298910</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Changed to maven project" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed to maven project" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
