@@ -9,6 +9,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
@@ -29,14 +30,15 @@ public class Snake {
     private final double WIDTH;
     private final ChoiceBox<String> fieldSizeChoiceBox;
     private static final String[] FOODS_IMAGE = {
-            "/Images/ImagesForSnakeGame/apple.png",
-            "/Images/ImagesForSnakeGame/banana.png",
-            "/Images/ImagesForSnakeGame/orange.png"
+            "/Images/ImagesForSnakeGame/Foods/apple.png",
+            "/Images/ImagesForSnakeGame/Foods/banana.png",
+            "/Images/ImagesForSnakeGame/Foods/orange.png"
     };
     private static final int INITIAL_SPEED = 130;
     private static final int SPEED_INCREASE_AMOUNT = 5;
     private final Label scoreLabel;
     private final GraphicsContext graphicsContext;
+    private final ImageView pausedImageView;
     private final ArrayList<Point> snakeBody = new ArrayList<>();
     private final Random random = new Random();
     private int rows;
@@ -61,12 +63,13 @@ public class Snake {
      * @param graphicsContext The GraphicsContext for drawing on the game canvas.
      * @param scoreLabel      The label to display the game score.
      */
-    public Snake(double height, double width, GraphicsContext graphicsContext, Label scoreLabel, ChoiceBox<String> fieldSizeChoiceBox) {
+    public Snake(double height, double width, GraphicsContext graphicsContext, Label scoreLabel, ChoiceBox<String> fieldSizeChoiceBox, ImageView pausedImageView) {
         this.HEIGHT = height;
         this.WIDTH = width;
         this.graphicsContext = graphicsContext;
         this.scoreLabel = scoreLabel;
         this.fieldSizeChoiceBox = fieldSizeChoiceBox;
+        this.pausedImageView = pausedImageView;
 
         initializeKeyPressHandler();
     }
@@ -142,6 +145,9 @@ public class Snake {
             case S:
                 pendingDirection = Direction.DOWN;
                 break;
+            case P:
+                pauseGame();
+                break;
             case R:
                 restart();
         }
@@ -164,20 +170,20 @@ public class Snake {
     private void run() {
         if (isGameOver) {
             displayGameOver();
-            return;
+        } else {
+
+            setDirection(pendingDirection);
+
+            drawBackground();
+            drawFood();
+            drawSnake();
+
+            updateSnakeBody();
+            moveSnake();
+
+            checkIsGameOver();
+            eatFood();
         }
-
-        setDirection(pendingDirection);
-
-        drawBackground();
-        drawFood();
-        drawSnake();
-
-        updateSnakeBody();
-        moveSnake();
-
-        checkIsGameOver();
-        eatFood();
     }
 
     /**
@@ -348,6 +354,19 @@ public class Snake {
     }
 
     /**
+     * Toggles the game's pause state.
+     */
+    private void pauseGame() {
+        if (timeline.getStatus() == Animation.Status.RUNNING && !isGameOver) {
+            timeline.pause();
+            pausedImageView.setOpacity(1d);
+        } else {
+            timeline.play();
+            pausedImageView.setOpacity(0d);
+        }
+    }
+
+    /**
      * Restarts the Snake game by stopping the timeline, resetting the score, and starting a new game.
      */
     public void restart() {
@@ -357,6 +376,8 @@ public class Snake {
             updateLabel();
             snakeBody.clear();
             isGameOver = false;
+            direction = Direction.DOWN;
+            currentSpeed = INITIAL_SPEED;
 
             start();
         } catch (Exception e) {

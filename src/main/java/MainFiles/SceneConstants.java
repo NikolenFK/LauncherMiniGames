@@ -1,11 +1,11 @@
 package MainFiles;
 
 public enum SceneConstants {
-    SignIn("Authorization", "/FXML_Files/SignIn_SignUp/SignIn.fxml"),
-    SignUp("Registration", "/FXML_Files/SignIn_SignUp/SignUp.fxml"),
-    SelectionMenu("Selection Menu", "/FXML_Files/SelectionMenu.fxml"),
-    SnakeGame("Snake", "/FXML_Files/SnakeGame.fxml"),
-    Minesweeper("Minesweeper", "/FXML_Files/Minesweeper.fxml");
+    SignIn("Authorization", "/FXML/SignIn_SignUp/SignIn.fxml"),
+    SignUp("Registration", "/FXML/SignIn_SignUp/SignUp.fxml"),
+    SelectionMenu("Selection Menu", "/FXML/SelectionMenu.fxml"),
+    SnakeGame("Snake", "/FXML/Games/SnakeGame.fxml"),
+    Minesweeper("Minesweeper", "/FXML/Games/Minesweeper.fxml");
 
     private final String name;
     private final String path;

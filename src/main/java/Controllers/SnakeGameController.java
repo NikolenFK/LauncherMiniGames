@@ -9,6 +9,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 
 /**
  * Controller for the Snake Game.
@@ -25,10 +26,16 @@ public class SnakeGameController {
     private Canvas gameCanvas;
 
     @FXML
+    private ImageView pausedImageView;
+
+    @FXML
     private Button restartButton;
 
     @FXML
     private Label scoreLabel;
+
+    @FXML
+    private Label infoLabel;
 
     private GraphicsContext graphicsContext;
 
@@ -56,7 +63,8 @@ public class SnakeGameController {
      * Initializes and starts the Snake game.
      */
     private void startGame() {
-        Snake snake = new Snake(gameCanvas.getHeight(), gameCanvas.getWidth(), graphicsContext, scoreLabel, fieldSizeChoiceBox);
+        Snake snake = new Snake(gameCanvas.getHeight(), gameCanvas.getWidth(), graphicsContext,
+                scoreLabel, fieldSizeChoiceBox, pausedImageView);
         restartButton.setOnAction(actionEvent -> snake.restart());
         snake.start();
     }

@@ -5,6 +5,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -28,6 +30,15 @@
    <Label fx:id="scoreLabel" layoutX="15.0" layoutY="115.0" prefHeight="35.0" prefWidth="180.0" text="Score: 0" textFill="#898989">
       <font>
          <Font name="Consolas" size="32.0" />
+      </font>
+   </Label>
+   <ImageView fx:id="pausedImageView" fitHeight="50.0" fitWidth="50.0" layoutX="536.0" layoutY="115.0" opacity="0.0"
+              pickOnBounds="true" preserveRatio="true">
+      <Image url="@../../Images/paused.png"/>
+   </ImageView>
+   <Label fx:id="infoLabel" layoutX="111.0" layoutY="64.0" prefHeight="38.0" prefWidth="378.0" text="ESC - close the game R - restart P - pause" textAlignment="CENTER" textFill="#898989">
+      <font>
+         <Font name="Consolas" size="16.0" />
       </font>
    </Label>
 </AnchorPane>
